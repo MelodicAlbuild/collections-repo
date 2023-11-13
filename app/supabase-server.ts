@@ -65,3 +65,17 @@ export const getActiveProductsWithPrices = async () => {
   }
   return data ?? [];
 };
+
+export const getCards = async () => {
+  const supabase = createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from('cards')
+    .select('*')
+    .order('id');
+
+  if (error) {
+    console.log(error.message);
+  }
+  return data ?? [];
+};
+

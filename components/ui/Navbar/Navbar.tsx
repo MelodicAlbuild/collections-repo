@@ -1,17 +1,9 @@
 import Link from 'next/link';
-import { createServerSupabaseClient } from '@/app/supabase-server';
-
-import Logo from '@/components/icons/Logo';
-import SignOutButton from './SignOutButton';
 
 import s from './Navbar.module.css';
+import Image from 'next/image';
 
 export default async function Navbar() {
-  const supabase = createServerSupabaseClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
   return (
     <nav className={s.root}>
       <a href="#skip" className="sr-only focus:not-sr-only">
@@ -21,27 +13,18 @@ export default async function Navbar() {
         <div className="relative flex flex-row justify-between py-4 align-center md:py-6">
           <div className="flex items-center flex-1">
             <Link href="/" className={s.logo} aria-label="Logo">
-              <Logo />
+              <Image
+                src={'https://avatars.githubusercontent.com/u/43552157?v=4'}
+                alt={'Logo'}
+                width={32}
+                height={32}
+              />
             </Link>
             <nav className="hidden ml-6 space-x-2 lg:block">
               <Link href="/" className={s.link}>
-                Pricing
+                Collections
               </Link>
-              {user && (
-                <Link href="/account" className={s.link}>
-                  Account
-                </Link>
-              )}
             </nav>
-          </div>
-          <div className="flex justify-end flex-1 space-x-8">
-            {user ? (
-              <SignOutButton />
-            ) : (
-              <Link href="/signin" className={s.link}>
-                Sign in
-              </Link>
-            )}
           </div>
         </div>
       </div>

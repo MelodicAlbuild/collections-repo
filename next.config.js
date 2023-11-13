@@ -4,6 +4,14 @@ const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com'
+      }
+    ]
   }
 };
 

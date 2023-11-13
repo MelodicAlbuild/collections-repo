@@ -88,6 +88,7 @@ export interface Database {
           image: string | null
           metadata: Json | null
           name: string | null
+          edition: string | null
         }
         Insert: {
           active?: boolean | null
@@ -104,6 +105,36 @@ export interface Database {
           image?: string | null
           metadata?: Json | null
           name?: string | null
+        }
+        Relationships: []
+      }
+      cards: {
+        Row: {
+          owned: number
+          price: number
+          id: string
+          name: string
+          element: string
+          edition: string
+          variant: Database["public"]["Enums"]["variants"]
+        }
+        Insert: {
+          owned: number
+          price: number
+          id: string
+          name: string
+          element: string
+          edition: string
+          variant: Database["public"]["Enums"]["variants"]
+        }
+        Update: {
+          owned: number
+          price: number
+          id: string
+          name: string
+          element: string
+          edition: string
+          variant: Database["public"]["Enums"]["variants"]
         }
         Relationships: []
       }
@@ -216,14 +247,15 @@ export interface Database {
       pricing_plan_interval: "day" | "week" | "month" | "year"
       pricing_type: "one_time" | "recurring"
       subscription_status:
-        | "trialing"
-        | "active"
-        | "canceled"
-        | "incomplete"
-        | "incomplete_expired"
-        | "past_due"
-        | "unpaid"
-        | "paused"
+      | "trialing"
+      | "active"
+      | "canceled"
+      | "incomplete"
+      | "incomplete_expired"
+      | "past_due"
+      | "unpaid"
+      | "paused"
+      variants: "holo" | "fa" | "stellar" | "alt"
     }
     CompositeTypes: {
       [_ in never]: never
