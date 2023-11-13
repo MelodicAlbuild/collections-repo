@@ -10,32 +10,24 @@ interface Props {
 }
 
 export default function CardPage({ cards, element, edition }: Props) {
-  function GetAmountOfElement(element: string) {
+  function HasCardsOfVariant(variant: string | null) {
     const filteredArray = cards.filter(function (card) {
-      return card.element.toLowerCase() === element.toLowerCase();
+      if (card.edition.toLowerCase() != edition.toLowerCase()) return false;
+      if (card.element.toLowerCase() != element.toLowerCase()) return false;
+      if (variant == null) {
+        return card.variant == variant;
+      }
+
+      if (card.variant == null) {
+        return card.variant == variant;
+      }
+
+      return card.variant.toLowerCase() === variant.toLowerCase();
     });
 
-    let sum = 0;
+    console.log(variant + ' | ' + filteredArray);
 
-    filteredArray.forEach((card) => {
-      sum += card.owned;
-    });
-
-    return sum;
-  }
-
-  function GetAmountOfEdition(edition: string) {
-    const filteredArray = cards.filter(function (card) {
-      return card.edition.toLowerCase() === edition.toLowerCase();
-    });
-
-    let sum = 0;
-
-    filteredArray.forEach((card) => {
-      sum += card.owned;
-    });
-
-    return sum;
+    return filteredArray.length > 0;
   }
 
   function GetAmountOfNumber(number: string) {
@@ -61,205 +53,230 @@ export default function CardPage({ cards, element, edition }: Props) {
             {element != 'N/A' ? element : ''} Collection
           </h1>
         </div>
-        <br />
-        <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
-          Normal
-        </h3>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          {cards.map((card: Card) => {
-            if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-            if (card.element.toLowerCase() != element.toLowerCase()) return;
-            if (card.variant != null) return;
-            const priceString = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format((card.price || 0) / 100);
-            return (
-              <div
-                key={card.id}
-                className={
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                }
-              >
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 text-white">
-                    {card.name} | {card.id}
-                  </h2>
-                  <p className="mt-8">
-                    <span className="text-5xl font-extrabold white">
-                      {GetAmountOfNumber(card.id)}
-                    </span>
-                    <span className="text-base font-medium text-zinc-100">
-                      {' collected'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <br />
-        <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
-          Holo
-        </h3>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          {cards.map((card: Card) => {
-            if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-            if (card.element.toLowerCase() != element.toLowerCase()) return;
-            if (card.variant != 'holo') return;
-            const priceString = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format((card.price || 0) / 100);
-            return (
-              <div
-                key={card.id}
-                className={
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                }
-              >
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 text-white">
-                    {card.name} | {card.id}
-                  </h2>
-                  <br />
-                  <h2 className="text-xl font-semibold leading-6 text-white">
-                    Owned: {card.owned}
-                  </h2>
-                  <p className="mt-8">
-                    <span className="text-5xl font-extrabold white">
-                      {GetAmountOfNumber(card.id)}
-                    </span>
-                    <span className="text-base font-medium text-zinc-100">
-                      {' collected'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <br />
-        <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
-          Full Art
-        </h3>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          {cards.map((card: Card) => {
-            if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-            if (card.element.toLowerCase() != element.toLowerCase()) return;
-            if (card.variant != 'fa') return;
-            const priceString = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format((card.price || 0) / 100);
-            return (
-              <div
-                key={card.id}
-                className={
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                }
-              >
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 text-white">
-                    {card.name} | {card.id}
-                  </h2>
-                  <p className="mt-8">
-                    <span className="text-5xl font-extrabold white">
-                      {GetAmountOfNumber(card.id)}
-                    </span>
-                    <span className="text-base font-medium text-zinc-100">
-                      {' collected'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <br />
-        <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
-          Stellar
-        </h3>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          {cards.map((card: Card) => {
-            if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-            if (card.element.toLowerCase() != element.toLowerCase()) return;
-            if (card.variant != 'stellar') return;
-            const priceString = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format((card.price || 0) / 100);
-            return (
-              <div
-                key={card.id}
-                className={
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                }
-              >
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 text-white">
-                    {card.name} | {card.id}
-                  </h2>
-                  <p className="mt-8">
-                    <span className="text-5xl font-extrabold white">
-                      {GetAmountOfNumber(card.id)}
-                    </span>
-                    <span className="text-base font-medium text-zinc-100">
-                      {' collected'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <br />
-        <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
-          Alt Art
-        </h3>
-        <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
-          {cards.map((card: Card) => {
-            if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-            if (card.element.toLowerCase() != element.toLowerCase()) return;
-            if (card.variant != 'alt') return;
-            const priceString = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 0
-            }).format((card.price || 0) / 100);
-            return (
-              <div
-                key={card.id}
-                className={
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                }
-              >
-                <div className="p-6">
-                  <h2 className="text-2xl font-semibold leading-6 text-white">
-                    {card.name} | {card.id}
-                  </h2>
-                  <p className="mt-8">
-                    <span className="text-5xl font-extrabold white">
-                      {GetAmountOfNumber(card.id)}
-                    </span>
-                    <span className="text-base font-medium text-zinc-100">
-                      {' collected'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {HasCardsOfVariant(null) ? (
+          <>
+            <br />
+            <br />
+            <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+              Normal
+            </h3>
+            <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+              {cards.map((card: Card) => {
+                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
+                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (card.variant != null) return;
+                return (
+                  <div
+                    key={card.id}
+                    className={
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                    }
+                  >
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold leading-6 text-white">
+                        {card.name} | {card.id}
+                      </h2>
+                      <p className="mt-8">
+                        <span className="text-5xl font-extrabold white">
+                          {GetAmountOfNumber(card.id)}
+                        </span>
+                        <span className="text-base font-medium text-zinc-100">
+                          {' collected'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {HasCardsOfVariant('holo') ? (
+          <>
+            <br />
+            <br />
+            <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+              Holo
+            </h3>
+            <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+              {cards.map((card: Card) => {
+                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
+                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (card.variant != 'holo') return;
+                const priceString = new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0
+                }).format((card.price || 0) / 100);
+                return (
+                  <div
+                    key={card.id}
+                    className={
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                    }
+                  >
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold leading-6 text-white">
+                        {card.name} | {card.id}
+                      </h2>
+                      <br />
+                      <h2 className="text-xl font-semibold leading-6 text-white">
+                        Owned: {card.owned}
+                      </h2>
+                      <p className="mt-8">
+                        <span className="text-5xl font-extrabold white">
+                          {GetAmountOfNumber(card.id)}
+                        </span>
+                        <span className="text-base font-medium text-zinc-100">
+                          {' collected'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {HasCardsOfVariant('fa') ? (
+          <>
+            <br />
+            <br />
+            <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+              Full Art
+            </h3>
+            <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+              {cards.map((card: Card) => {
+                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
+                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (card.variant != 'fa') return;
+                const priceString = new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0
+                }).format((card.price || 0) / 100);
+                return (
+                  <div
+                    key={card.id}
+                    className={
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                    }
+                  >
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold leading-6 text-white">
+                        {card.name} | {card.id}
+                      </h2>
+                      <p className="mt-8">
+                        <span className="text-5xl font-extrabold white">
+                          {GetAmountOfNumber(card.id)}
+                        </span>
+                        <span className="text-base font-medium text-zinc-100">
+                          {' collected'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {HasCardsOfVariant('stellar') ? (
+          <>
+            <br />
+            <br />
+            <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+              Stellar
+            </h3>
+            <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+              {cards.map((card: Card) => {
+                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
+                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (card.variant != 'stellar') return;
+                const priceString = new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0
+                }).format((card.price || 0) / 100);
+                return (
+                  <div
+                    key={card.id}
+                    className={
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                    }
+                  >
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold leading-6 text-white">
+                        {card.name} | {card.id}
+                      </h2>
+                      <p className="mt-8">
+                        <span className="text-5xl font-extrabold white">
+                          {GetAmountOfNumber(card.id)}
+                        </span>
+                        <span className="text-base font-medium text-zinc-100">
+                          {' collected'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        {HasCardsOfVariant('alt') ? (
+          <>
+            <br />
+            <br />
+            <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+              Alt Art
+            </h3>
+            <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
+              {cards.map((card: Card) => {
+                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
+                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (card.variant != 'alt') return;
+                const priceString = new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0
+                }).format((card.price || 0) / 100);
+                return (
+                  <div
+                    key={card.id}
+                    className={
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                    }
+                  >
+                    <div className="p-6">
+                      <h2 className="text-2xl font-semibold leading-6 text-white">
+                        {card.name} | {card.id}
+                      </h2>
+                      <p className="mt-8">
+                        <span className="text-5xl font-extrabold white">
+                          {GetAmountOfNumber(card.id)}
+                        </span>
+                        <span className="text-base font-medium text-zinc-100">
+                          {' collected'}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </section>
   );
