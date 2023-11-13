@@ -20,6 +20,7 @@ const upsertProductRecord = async (product: Stripe.Product) => {
     name: product.name,
     description: product.description ?? null,
     image: product.images?.[0] ?? null,
+    edition: null,
     metadata: product.metadata
   };
 

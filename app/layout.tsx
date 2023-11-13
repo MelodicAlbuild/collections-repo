@@ -5,12 +5,12 @@ import { PropsWithChildren } from 'react';
 import 'styles/main.css';
 
 const meta = {
-  title: 'Next.js Subscription Starter',
-  description: 'Brought to you by Vercel, Stripe, and Supabase.',
+  title: 'Elestrals Collection',
+  description: 'The Elestrals Collection!',
   cardImage: '/og.png',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://subscription-starter.vercel.app',
+  url: 'https://collection.melodicalbuild.com',
   type: 'website'
 };
 
