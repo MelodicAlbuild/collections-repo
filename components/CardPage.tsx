@@ -1,5 +1,6 @@
 'use client';
 import { Database } from '@/types_db';
+import cn from 'classnames';
 
 type Card = Database['public']['Tables']['cards']['Row'];
 
@@ -68,9 +69,14 @@ export default function CardPage({ cards, element, edition }: Props) {
                 return (
                   <div
                     key={card.id}
-                    className={
-                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                    }
+                    className={cn(
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                      {
+                        'border border-pink-500': card.owned
+                          ? card.owned > 0
+                          : card.owned < 0
+                      }
+                    )}
                   >
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold leading-6 text-white">
@@ -105,25 +111,21 @@ export default function CardPage({ cards, element, edition }: Props) {
                 if (card.edition.toLowerCase() != edition.toLowerCase()) return;
                 if (card.element.toLowerCase() != element.toLowerCase()) return;
                 if (card.variant != 'holo') return;
-                const priceString = new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0
-                }).format((card.price || 0) / 100);
                 return (
                   <div
                     key={card.id}
-                    className={
-                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                    }
+                    className={cn(
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                      {
+                        'border border-pink-500': card.owned
+                          ? card.owned > 0
+                          : card.owned < 0
+                      }
+                    )}
                   >
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold leading-6 text-white">
                         {card.name} | {card.id}
-                      </h2>
-                      <br />
-                      <h2 className="text-xl font-semibold leading-6 text-white">
-                        Owned: {card.owned}
                       </h2>
                       <p className="mt-8">
                         <span className="text-5xl font-extrabold white">
@@ -162,9 +164,14 @@ export default function CardPage({ cards, element, edition }: Props) {
                 return (
                   <div
                     key={card.id}
-                    className={
-                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                    }
+                    className={cn(
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                      {
+                        'border border-pink-500': card.owned
+                          ? card.owned > 0
+                          : card.owned < 0
+                      }
+                    )}
                   >
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold leading-6 text-white">
@@ -207,9 +214,14 @@ export default function CardPage({ cards, element, edition }: Props) {
                 return (
                   <div
                     key={card.id}
-                    className={
-                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                    }
+                    className={cn(
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                      {
+                        'border border-pink-500': card.owned
+                          ? card.owned > 0
+                          : card.owned < 0
+                      }
+                    )}
                   >
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold leading-6 text-white">
@@ -252,9 +264,14 @@ export default function CardPage({ cards, element, edition }: Props) {
                 return (
                   <div
                     key={card.id}
-                    className={
-                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
-                    }
+                    className={cn(
+                      'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                      {
+                        'border border-pink-500': card.owned
+                          ? card.owned > 0
+                          : card.owned < 0
+                      }
+                    )}
                   >
                     <div className="p-6">
                       <h2 className="text-2xl font-semibold leading-6 text-white">

@@ -36,3 +36,16 @@ export const getCards = async () => {
   return data ?? [];
 };
 
+export const getEditions = async () => {
+  const supabase = createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from('editions')
+    .select('*')
+    .order('id');
+
+  if (error) {
+    console.log(error.message);
+  }
+  return data ?? [];
+};
+

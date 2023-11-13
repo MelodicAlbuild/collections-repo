@@ -138,6 +138,21 @@ export interface Database {
         }
         Relationships: []
       }
+      editions: {
+        Row: {
+          id: string
+          totalCards: number
+        }
+        Insert: {
+          id: string
+          totalCards: number
+        }
+        Update: {
+          id: string
+          totalCards: number
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at: string | null

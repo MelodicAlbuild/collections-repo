@@ -22,15 +22,17 @@ interface SubscriptionWithProduct extends Subscription {
 }
 
 type Card = Database['public']['Tables']['cards']['Row'];
+type Edition = Database['public']['Tables']['editions']['Row'];
 
 interface Props {
   products: ProductWithPrices[];
   cards: Card[];
+  editions: Edition[];
 }
 
 type BillingInterval = 'lifetime' | 'year' | 'month';
 
-export default function Pricing({ products, cards }: Props) {
+export default function Pricing({ products, cards, editions }: Props) {
   const intervals = Array.from(
     new Set(
       products.flatMap((product) =>
@@ -42,30 +44,38 @@ export default function Pricing({ products, cards }: Props) {
 
   function GetAmountOfElement(element: string) {
     const filteredArray = cards.filter(function (card) {
-      return card.element.toLowerCase() === element.toLowerCase();
+      return (
+        card.element.toLowerCase() === element.toLowerCase() && card.owned > 0
+      );
     });
 
-    let sum = 0;
-
-    filteredArray.forEach((card) => {
-      sum += card.owned;
-    });
-
-    return sum;
+    return filteredArray.length;
   }
 
   function GetAmountOfEdition(edition: string) {
     const filteredArray = cards.filter(function (card) {
-      return card.edition.toLowerCase() === edition.toLowerCase();
+      return (
+        card.edition.toLowerCase() === edition.toLowerCase() && card.owned > 0
+      );
     });
 
-    let sum = 0;
+    return filteredArray.length;
+  }
 
-    filteredArray.forEach((card) => {
-      sum += card.owned;
-    });
+  function GetIsCompleteEdition(id: string, collected: number) {
+    let totalCount = editions.find((ed) => ed.id == id)?.totalCards;
 
-    return sum;
+    return totalCount! <= collected;
+  }
+
+  function GetIsCompleteAll(id: string) {
+    let collected = GetAmountOfEdition(id);
+    if (id == 'promo-founders') {
+      collected = GetAmountOfEdition('founders-promo');
+    }
+    let totalCount = editions.find((ed) => ed.id == id)?.totalCards;
+
+    return totalCount! <= collected;
   }
 
   return (
@@ -82,7 +92,14 @@ export default function Pricing({ products, cards }: Props) {
         </div>
         <br />
         <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+        <h3
+          className={cn(
+            'text-2xl font-extrabold text-white sm:text-center sm:text-4xl',
+            {
+              'text-pink-500': GetIsCompleteAll('founders') ? true : false
+            }
+          )}
+        >
           Founders Edition
         </h3>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
@@ -101,7 +118,15 @@ export default function Pricing({ products, cards }: Props) {
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                  {
+                    'border border-pink-500': GetIsCompleteEdition(
+                      product.id,
+                      GetAmountOfElement(product.name!)
+                    )
+                      ? true
+                      : false
+                  }
                 )}
               >
                 <div className="p-6">
@@ -139,7 +164,14 @@ export default function Pricing({ products, cards }: Props) {
         </div>
         <br />
         <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+        <h3
+          className={cn(
+            'text-2xl font-extrabold text-white sm:text-center sm:text-4xl',
+            {
+              'text-pink-500': GetIsCompleteAll('artist') ? true : false
+            }
+          )}
+        >
           Artist Collection
         </h3>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
@@ -158,7 +190,15 @@ export default function Pricing({ products, cards }: Props) {
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                  {
+                    'border border-pink-500': GetIsCompleteEdition(
+                      product.id,
+                      GetAmountOfEdition(product.name!)
+                    )
+                      ? true
+                      : false
+                  }
                 )}
               >
                 <div className="p-6">
@@ -193,7 +233,14 @@ export default function Pricing({ products, cards }: Props) {
         </div>
         <br />
         <br />
-        <h3 className="text-2xl font-extrabold text-white sm:text-center sm:text-4xl">
+        <h3
+          className={cn(
+            'text-2xl font-extrabold text-white sm:text-center sm:text-4xl',
+            {
+              'text-pink-500': GetIsCompleteAll('promo-founders') ? true : false
+            }
+          )}
+        >
           Founders Promo Collection
         </h3>
         <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
@@ -212,7 +259,15 @@ export default function Pricing({ products, cards }: Props) {
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
+                  {
+                    'border border-pink-500': GetIsCompleteEdition(
+                      product.id,
+                      GetAmountOfEdition('founders-promo')
+                    )
+                      ? true
+                      : false
+                  }
                 )}
               >
                 <div className="p-6">
