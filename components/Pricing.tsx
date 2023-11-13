@@ -22,20 +22,12 @@ interface SubscriptionWithProduct extends Subscription {
 }
 
 interface Props {
-  session: Session | null;
-  user: User | null | undefined;
   products: ProductWithPrices[];
-  subscription: SubscriptionWithProduct | null;
 }
 
 type BillingInterval = 'lifetime' | 'year' | 'month';
 
-export default function Pricing({
-  session,
-  user,
-  products,
-  subscription
-}: Props) {
+export default function Pricing({ products }: Props) {
   const intervals = Array.from(
     new Set(
       products.flatMap((product) =>
@@ -81,12 +73,7 @@ export default function Pricing({
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
-                  {
-                    'border border-pink-500': subscription
-                      ? product.name === subscription?.prices?.products?.name
-                      : product.name === 'Freelancer'
-                  }
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
                 )}
               >
                 <div className="p-6">
@@ -144,12 +131,7 @@ export default function Pricing({
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
-                  {
-                    'border border-pink-500': subscription
-                      ? product.name === subscription?.prices?.products?.name
-                      : product.name === 'Freelancer'
-                  }
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
                 )}
               >
                 <div className="p-6">
@@ -204,12 +186,7 @@ export default function Pricing({
               <div
                 key={product.id}
                 className={cn(
-                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900',
-                  {
-                    'border border-pink-500': subscription
-                      ? product.name === subscription?.prices?.products?.name
-                      : product.name === 'Freelancer'
-                  }
+                  'rounded-lg shadow-sm divide-y divide-zinc-600 bg-zinc-900'
                 )}
               >
                 <div className="p-6">
