@@ -26,8 +26,6 @@ export default function CardPage({ cards, element, edition }: Props) {
       return card.variant.toLowerCase() === variant.toLowerCase();
     });
 
-    console.log(variant + ' | ' + filteredArray);
-
     return filteredArray.length > 0;
   }
 
