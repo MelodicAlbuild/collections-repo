@@ -1,9 +1,12 @@
 export const dynamic = 'force-dynamic';
 import Pricing from '@/components/Pricing';
-import { getActiveProductsWithPrices } from '@/app/supabase-server';
+import { getActiveProductsWithPrices, getCards } from '@/app/supabase-server';
 
 export default async function PricingPage() {
-  const [products] = await Promise.all([getActiveProductsWithPrices()]);
+  const [products, cards] = await Promise.all([
+    getActiveProductsWithPrices(),
+    getCards()
+  ]);
 
-  return <Pricing products={products} />;
+  return <Pricing products={products} cards={cards} />;
 }

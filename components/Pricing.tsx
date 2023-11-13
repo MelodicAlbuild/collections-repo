@@ -21,13 +21,16 @@ interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null;
 }
 
+type Card = Database['public']['Tables']['cards']['Row'];
+
 interface Props {
   products: ProductWithPrices[];
+  cards: Card[];
 }
 
 type BillingInterval = 'lifetime' | 'year' | 'month';
 
-export default function Pricing({ products }: Props) {
+export default function Pricing({ products, cards }: Props) {
   const intervals = Array.from(
     new Set(
       products.flatMap((product) =>
@@ -36,9 +39,34 @@ export default function Pricing({ products }: Props) {
     )
   );
   const router = useRouter();
-  const [billingInterval, setBillingInterval] =
-    useState<BillingInterval>('month');
-  const [priceIdLoading, setPriceIdLoading] = useState<string>();
+
+  function GetAmountOfElement(element: string) {
+    const filteredArray = cards.filter(function (card) {
+      return card.element.toLowerCase() === element.toLowerCase();
+    });
+
+    let sum = 0;
+
+    filteredArray.forEach((card) => {
+      sum += card.owned;
+    });
+
+    return sum;
+  }
+
+  function GetAmountOfEdition(edition: string) {
+    const filteredArray = cards.filter(function (card) {
+      return card.edition.toLowerCase() === edition.toLowerCase();
+    });
+
+    let sum = 0;
+
+    filteredArray.forEach((card) => {
+      sum += card.owned;
+    });
+
+    return sum;
+  }
 
   return (
     <section className="bg-black">
@@ -82,12 +110,11 @@ export default function Pricing({ products }: Props) {
                   </h2>
                   <p className="mt-4 text-zinc-300">{product.description}</p>
                   <p className="mt-8">
-                    <p className="mt-4 text-zinc-300">Starting At:</p>
                     <span className="text-5xl font-extrabold white">
-                      {priceString}
+                      {GetAmountOfElement(product.name!)}
                     </span>
                     <span className="text-base font-medium text-zinc-100">
-                      /each
+                      {' collected'}
                     </span>
                   </p>
                   <Button
@@ -140,12 +167,11 @@ export default function Pricing({ products }: Props) {
                   </h2>
                   <p className="mt-4 text-zinc-300">{product.description}</p>
                   <p className="mt-8">
-                    <p className="mt-4 text-zinc-300">Starting At:</p>
                     <span className="text-5xl font-extrabold white">
-                      {priceString}
+                      {GetAmountOfEdition(product.name!)}
                     </span>
                     <span className="text-base font-medium text-zinc-100">
-                      /each
+                      {' collected'}
                     </span>
                   </p>
                   <Button
@@ -195,12 +221,11 @@ export default function Pricing({ products }: Props) {
                   </h2>
                   <p className="mt-4 text-zinc-300">{product.description}</p>
                   <p className="mt-8">
-                    <p className="mt-4 text-zinc-300">Starting At:</p>
                     <span className="text-5xl font-extrabold white">
-                      {priceString}
+                      {GetAmountOfEdition('founders-promo')}
                     </span>
                     <span className="text-base font-medium text-zinc-100">
-                      /each
+                      {' collected'}
                     </span>
                   </p>
                   <Button
