@@ -49,3 +49,16 @@ export const getEditions = async () => {
   return data ?? [];
 };
 
+export const getEditionCollections = async () => {
+  const supabase = createServerSupabaseClient();
+  const { data, error } = await supabase
+    .from('edition_collections')
+    .select('*')
+    .order('id');
+
+  if (error) {
+    console.log(error.message);
+  }
+  return data ?? [];
+};
+

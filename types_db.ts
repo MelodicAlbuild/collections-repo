@@ -89,6 +89,7 @@ export interface Database {
           metadata: Json | null
           name: string | null
           edition: string | null
+          searchByElement: boolean | null
         }
         Insert: {
           active?: boolean | null
@@ -156,6 +157,24 @@ export interface Database {
           totalCards: number
           card_name: string
           named_version: string
+        }
+        Relationships: []
+      }
+      edition_collections: {
+        Row: {
+          id: string
+          header: string
+          links: string[]
+        }
+        Insert: {
+          id: string
+          header: string
+          links: string[]
+        }
+        Update: {
+          id: string
+          header: string
+          links: string[]
         }
         Relationships: []
       }
