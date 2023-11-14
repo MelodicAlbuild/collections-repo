@@ -3,18 +3,30 @@ import { Database } from '@/types_db';
 import cn from 'classnames';
 
 type Card = Database['public']['Tables']['cards']['Row'];
+type Edition = Database['public']['Tables']['editions']['Row'];
 
 interface Props {
   cards: Card[];
   element: string;
   edition: string;
+  searchByEdition: boolean;
+  editions: Edition[];
 }
 
-export default function CardPage({ cards, element, edition }: Props) {
+export default function CardPage({
+  cards,
+  element,
+  edition,
+  searchByEdition,
+  editions
+}: Props) {
   function HasCardsOfVariant(variant: string | null) {
     const filteredArray = cards.filter(function (card) {
-      if (card.edition.toLowerCase() != edition.toLowerCase()) return false;
-      if (card.element.toLowerCase() != element.toLowerCase()) return false;
+      if (searchByEdition) {
+        if (card.edition.toLowerCase() != edition.toLowerCase()) return false;
+      } else {
+        if (card.element.toLowerCase() != element.toLowerCase()) return false;
+      }
       if (variant == null) {
         return card.variant == variant;
       }
@@ -48,8 +60,11 @@ export default function CardPage({ cards, element, edition }: Props) {
       <div className="max-w-6xl px-4 py-8 mx-auto sm:py-24 sm:px-6 lg:px-8">
         <div className="sm:flex sm:flex-col sm:align-center">
           <h1 className="text-4xl font-extrabold text-white sm:text-center sm:text-6xl">
-            {edition == 'founders-promo' ? 'Founders Promo' : edition}{' '}
-            {element != 'N/A' ? element : ''} Collection
+            {searchByEdition
+              ? editions.find((ed) => ed.card_name == edition)?.named_version
+              : editions.find((ed) => ed.card_name == edition + '_' + element)
+                  ?.named_version}{' '}
+            Collection
           </h1>
         </div>
         {HasCardsOfVariant(null) ? (
@@ -61,8 +76,13 @@ export default function CardPage({ cards, element, edition }: Props) {
             </h3>
             <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
               {cards.map((card: Card) => {
-                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (searchByEdition) {
+                  if (card.edition.toLowerCase() != edition.toLowerCase())
+                    return false;
+                } else {
+                  if (card.element.toLowerCase() != element.toLowerCase())
+                    return false;
+                }
                 if (card.variant != null) return;
                 return (
                   <div
@@ -106,8 +126,13 @@ export default function CardPage({ cards, element, edition }: Props) {
             </h3>
             <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
               {cards.map((card: Card) => {
-                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (searchByEdition) {
+                  if (card.edition.toLowerCase() != edition.toLowerCase())
+                    return false;
+                } else {
+                  if (card.element.toLowerCase() != element.toLowerCase())
+                    return false;
+                }
                 if (card.variant != 'holo') return;
                 return (
                   <div
@@ -151,14 +176,14 @@ export default function CardPage({ cards, element, edition }: Props) {
             </h3>
             <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
               {cards.map((card: Card) => {
-                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (searchByEdition) {
+                  if (card.edition.toLowerCase() != edition.toLowerCase())
+                    return false;
+                } else {
+                  if (card.element.toLowerCase() != element.toLowerCase())
+                    return false;
+                }
                 if (card.variant != 'fa') return;
-                const priceString = new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0
-                }).format((card.price || 0) / 100);
                 return (
                   <div
                     key={card.id}
@@ -201,14 +226,14 @@ export default function CardPage({ cards, element, edition }: Props) {
             </h3>
             <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
               {cards.map((card: Card) => {
-                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (searchByEdition) {
+                  if (card.edition.toLowerCase() != edition.toLowerCase())
+                    return false;
+                } else {
+                  if (card.element.toLowerCase() != element.toLowerCase())
+                    return false;
+                }
                 if (card.variant != 'stellar') return;
-                const priceString = new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0
-                }).format((card.price || 0) / 100);
                 return (
                   <div
                     key={card.id}
@@ -251,14 +276,14 @@ export default function CardPage({ cards, element, edition }: Props) {
             </h3>
             <div className="mt-12 space-y-4 sm:mt-16 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-6 lg:max-w-4xl lg:mx-auto xl:max-w-none xl:mx-0 xl:grid-cols-3">
               {cards.map((card: Card) => {
-                if (card.edition.toLowerCase() != edition.toLowerCase()) return;
-                if (card.element.toLowerCase() != element.toLowerCase()) return;
+                if (searchByEdition) {
+                  if (card.edition.toLowerCase() != edition.toLowerCase())
+                    return false;
+                } else {
+                  if (card.element.toLowerCase() != element.toLowerCase())
+                    return false;
+                }
                 if (card.variant != 'alt') return;
-                const priceString = new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                  minimumFractionDigits: 0
-                }).format((card.price || 0) / 100);
                 return (
                   <div
                     key={card.id}

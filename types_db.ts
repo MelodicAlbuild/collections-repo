@@ -142,14 +142,20 @@ export interface Database {
         Row: {
           id: string
           totalCards: number
+          card_name: string
+          named_version: string
         }
         Insert: {
           id: string
           totalCards: number
+          card_name: string
+          named_version: string
         }
         Update: {
           id: string
           totalCards: number
+          card_name: string
+          named_version: string
         }
         Relationships: []
       }
